@@ -1,3 +1,5 @@
+package com.gmail.egupovsv89;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
@@ -5,7 +7,7 @@ import java.util.Date;
 public class TaskRepository {
     private List<Task> tasks;
 
-    TaskRepository(List<Task> tasks) {
+    public TaskRepository(List<Task> tasks) {
         this.tasks = tasks;
     }
     public List<Task> getTasks() {

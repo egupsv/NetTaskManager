@@ -1,4 +1,13 @@
+package com.gmail.egupovsv89;
+
+import com.gmail.egupovsv89.commands.AddCommand;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Scanner;
 
 public class Task {
     private String name;
@@ -6,13 +15,13 @@ public class Task {
     private boolean completed = false;
     private Date time;
 
-    Task(String name, Date time) {
+    public Task(String name, Date time) {
         this.name = name;
         this.time = time;
         this.description = "";
     }
 
-    Task(String name, String description, Date time) {
+    public Task(String name, String description, Date time) {
         this.name = name;
         this.time = time;
         this.description = description;
@@ -55,4 +64,5 @@ public class Task {
         return (this == obj);
         //return super.equals(obj);
     }
+
 }
