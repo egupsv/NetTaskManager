@@ -1,6 +1,6 @@
-package com.gmail.egupovsv89.commands;
+package com.gmail.egupovsv89.task_manager.commands;
 
-import com.gmail.egupovsv89.TaskRepository;
+import com.gmail.egupovsv89.task_manager.TaskRepository;
 
 public class HelpCommand {
     private TaskRepository tr;

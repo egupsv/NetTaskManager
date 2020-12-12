@@ -1,13 +1,6 @@
-package com.gmail.egupovsv89;
+package com.gmail.egupovsv89.task_manager;
 
-import com.gmail.egupovsv89.commands.AddCommand;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.Scanner;
 
 public class Task {
     private String name;

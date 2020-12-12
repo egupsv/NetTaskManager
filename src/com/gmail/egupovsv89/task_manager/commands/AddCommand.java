@@ -1,8 +1,8 @@
-package com.gmail.egupovsv89.commands;
+package com.gmail.egupovsv89.task_manager.commands;
 
-import com.gmail.egupovsv89.Command;
-import com.gmail.egupovsv89.Task;
-import com.gmail.egupovsv89.TaskRepository;
+import com.gmail.egupovsv89.task_manager.Command;
+import com.gmail.egupovsv89.task_manager.Task;
+import com.gmail.egupovsv89.task_manager.TaskRepository;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

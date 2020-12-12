@@ -1,6 +1,4 @@
-package com.gmail.egupovsv89;
-
-import java.text.ParseException;
+package com.gmail.egupovsv89.task_manager;
 
 public interface Command {
     void getDescription ();

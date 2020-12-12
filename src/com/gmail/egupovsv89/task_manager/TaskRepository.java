@@ -1,4 +1,4 @@
-package com.gmail.egupovsv89;
+package com.gmail.egupovsv89.task_manager;
 
 import java.util.ArrayList;
 import java.util.List;

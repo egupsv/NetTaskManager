@@ -1,8 +1,8 @@
-package com.gmail.egupovsv89.commands;
+package com.gmail.egupovsv89.task_manager.commands;
 
-import com.gmail.egupovsv89.Command;
-import com.gmail.egupovsv89.TaskRepository;
-import com.gmail.egupovsv89.commands.util.Utils;
+import com.gmail.egupovsv89.task_manager.Command;
+import com.gmail.egupovsv89.task_manager.TaskRepository;
+import com.gmail.egupovsv89.task_manager.commands.util.Utils;
 
 public class ShowAllCommand implements Command {
     private TaskRepository tr;

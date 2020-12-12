@@ -1,6 +1,6 @@
-package com.gmail.egupovsv89.commands.util;
+package com.gmail.egupovsv89.task_manager.commands.util;
 
-import com.gmail.egupovsv89.Task;
+import com.gmail.egupovsv89.task_manager.Task;
 
 import java.util.List;
 

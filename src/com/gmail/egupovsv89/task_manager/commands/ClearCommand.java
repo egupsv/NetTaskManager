@@ -1,11 +1,7 @@
-package com.gmail.egupovsv89.commands;
+package com.gmail.egupovsv89.task_manager.commands;
 
-import com.gmail.egupovsv89.Command;
-import com.gmail.egupovsv89.Task;
-import com.gmail.egupovsv89.TaskRepository;
-
-import java.util.ArrayList;
-import java.text.ParseException;
+import com.gmail.egupovsv89.task_manager.Command;
+import com.gmail.egupovsv89.task_manager.TaskRepository;
 
 public class ClearCommand implements Command {
     private TaskRepository tr;
