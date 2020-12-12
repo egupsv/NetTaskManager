@@ -8,18 +8,6 @@ import java.util.List;
 import java.util.Scanner;
 
 public class CommandLineUI {
-    public static void show(List<Task> tasks, String emptyMessage) {
-        if (tasks.isEmpty()) {
-            System.out.print(emptyMessage);
-        }
-        int i = 0;
-        for (Task task : tasks) {
-            String isCompleted = task.isCompleted() ? "completed" : "not completed";
-            i++;
-            System.out.print("\n" + i + ") name: " + task.getName() + "\ndescription: " + task.getDescription() +
-                    "\ntime: " + task.getTime() + "\n" + isCompleted + "\n");
-        }
-    }
 
     public static void main(String[] args) throws ParseException, IndexOutOfBoundsException {
         TaskRepository tr = new TaskRepository(new ArrayList<Task>());
@@ -65,6 +53,4 @@ public class CommandLineUI {
         }
         in.close();
     }
-
-
 }

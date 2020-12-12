@@ -34,6 +34,7 @@ public class CopyCommand implements Command {
             time = new SimpleDateFormat("dd.MM.yyyy HH:mm").parse(timeInString);
             if (tr.getTasksByName(name).isEmpty()) {
                 Utils.show(tr.getTasksByName(name), "no such tasks");
+                in.close();
                 return;
             }
             Task task;
@@ -49,5 +50,6 @@ public class CopyCommand implements Command {
         } catch (ParseException e) {
             System.out.println("wrong date/time format");
         }
+        in.close();
     }
 }
