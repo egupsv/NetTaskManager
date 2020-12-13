@@ -8,22 +8,16 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class CommandLineUI {
-    /*public static TaskRepository deserializeTR (InputStream in) throws IOException, ClassNotFoundException {
-        DataInputStream dis = new DataInputStream(in);
-        ObjectInputStream ois = new ObjectInputStream(dis);
-        return (TaskRepository) ois.readObject();
-    }*/
-
     public static void main(String[] args) throws IndexOutOfBoundsException, ParseException {
         TaskRepository tr = new TaskRepository(new ArrayList<Task>());
         try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream("tasks.txt")))
         {
             tr = (TaskRepository) ois.readObject();
         }
-        catch(Exception ex){
-
-            System.out.println(ex.getMessage());
+        catch(Exception e) {
+            System.out.println(e.getMessage());
         }
+        tr.inform();
         Scanner in = new Scanner(System.in);
         System.out.print("Input a command (or input 'help' for list of commands): ");
         String command = in.nextLine();

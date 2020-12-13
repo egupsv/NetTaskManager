@@ -2,8 +2,10 @@ package com.gmail.egupovsv89.task_manager;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Scanner;
+import java.util.TimerTask;
 
-public class Task implements Serializable {
+public class Task extends TimerTask implements Serializable {
     private static final long serialVersionUID = 1L;
     private String name;
     private String description;
@@ -55,9 +57,12 @@ public class Task implements Serializable {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        return (this == obj);
-        //return super.equals(obj);
+    public void run() {
+        Scanner in = new Scanner(System.in);
+        System.out.println("time for " + name + " has come");
+        System.out.println("do you want to complete it right now? y/n");
+        if (in.nextLine() == "y") {
+            completed = true;
+        }
     }
-
 }

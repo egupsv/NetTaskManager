@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
+import java.util.Timer;
 
 public class TaskRepository implements Serializable {
     private List<Task> tasks;
@@ -20,15 +21,6 @@ public class TaskRepository implements Serializable {
         this.tasks.add(task);
     }
 
-
-    public List<Task> getTasksByTime(Date time) {
-        List<Task> result = new ArrayList<>();
-        for (Task task : tasks) {
-            if (task.getTime() == time) result.add(task);
-        }
-        return result;
-    }
-
     public List<Task> getTasksByName(String name) {
         List<Task> result = new ArrayList<Task>();
         for (Task task : tasks) {
@@ -37,7 +29,6 @@ public class TaskRepository implements Serializable {
         return result;
     }
 
-
     public void removeTask(String name) {
         for (int i = 0; i < tasks.size(); i++) {
             Task task = tasks.get(i);
@@ -45,7 +36,6 @@ public class TaskRepository implements Serializable {
         }
     }
     public void removeTask(String name, int num) {
-        int currentNum = 0;
         for (int i = 0; i < tasks.size(); i++) {
             Task task = tasks.get(i);
             if (name.equals(task.getName())) {
@@ -65,6 +55,12 @@ public class TaskRepository implements Serializable {
         tasks.clear();
     }
 
+    public void inform() {
+        for (Task task : tasks) {
+            Timer timer = new Timer();
+            timer.schedule(task, task.getTime());
+        }
 
+    }
 
 }
