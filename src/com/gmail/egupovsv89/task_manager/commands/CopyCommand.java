@@ -50,6 +50,5 @@ public class CopyCommand implements Command {
         } catch (ParseException e) {
             System.out.println("wrong date/time format");
         }
-        in.close();
     }
 }

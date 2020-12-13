@@ -19,5 +19,8 @@ public class HelpCommand {
         new ChangeCommand(tr, "time").getDescription();
         new RemoveCommand(tr).getDescription();
         new CopyCommand(tr).getDescription();
+        new CompleteCommand(tr).getDescription();
+        new ClearCommand(tr).getDescription();
+        new SaveCommand(tr).getDescription();
     }
 }

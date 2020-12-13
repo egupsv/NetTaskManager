@@ -61,7 +61,6 @@ public class ChangeCommand implements Command {
         } else {
             Utils.show(tr.getTasksByName(name), "no such tasks");
         }
-        in.close();
     }
 
     private void chooseAction(Task task, String newValue) {

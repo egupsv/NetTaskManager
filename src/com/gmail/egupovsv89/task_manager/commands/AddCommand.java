@@ -20,7 +20,7 @@ public class AddCommand implements Command {
     public void getDescription() {
         System.out.println("add - add new task;");
     }
-    public void execute() {
+    public void execute() throws ParseException {
         Scanner in;
         in = new Scanner(System.in);
         System.out.print("Input name of task: ");
@@ -39,6 +39,5 @@ public class AddCommand implements Command {
         } catch (ParseException e) {
             System.out.println("wrong date/time format");;
         }
-        in.close();
     }
 }

@@ -2,15 +2,28 @@ package com.gmail.egupovsv89.task_manager;
 
 import com.gmail.egupovsv89.task_manager.commands.*;
 
+import java.io.*;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class CommandLineUI {
+    /*public static TaskRepository deserializeTR (InputStream in) throws IOException, ClassNotFoundException {
+        DataInputStream dis = new DataInputStream(in);
+        ObjectInputStream ois = new ObjectInputStream(dis);
+        return (TaskRepository) ois.readObject();
+    }*/
 
-    public static void main(String[] args) throws ParseException, IndexOutOfBoundsException {
+    public static void main(String[] args) throws IndexOutOfBoundsException, ParseException {
         TaskRepository tr = new TaskRepository(new ArrayList<Task>());
+        try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream("tasks.txt")))
+        {
+            tr = (TaskRepository) ois.readObject();
+        }
+        catch(Exception ex){
+
+            System.out.println(ex.getMessage());
+        }
         Scanner in = new Scanner(System.in);
         System.out.print("Input a command (or input 'help' for list of commands): ");
         String command = in.nextLine();
@@ -45,6 +58,12 @@ public class CommandLineUI {
                     break;
                 case ("clear"):
                     new ClearCommand(tr).execute();
+                    break;
+                case ("complete"):
+                    new CompleteCommand(tr).execute();
+                    break;
+                case ("save"):
+                    new SaveCommand(tr).execute();
                     break;
             }
             in = new Scanner(System.in);

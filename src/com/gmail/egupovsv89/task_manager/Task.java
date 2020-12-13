@@ -1,8 +1,10 @@
 package com.gmail.egupovsv89.task_manager;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Task {
+public class Task implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String name;
     private String description;
     private boolean completed = false;

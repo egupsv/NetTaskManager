@@ -1,11 +1,13 @@
 package com.gmail.egupovsv89.task_manager;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
 
-public class TaskRepository {
+public class TaskRepository implements Serializable {
     private List<Task> tasks;
+    private static final long serialVersionUID = 1L;
 
     public TaskRepository(List<Task> tasks) {
         this.tasks = tasks;

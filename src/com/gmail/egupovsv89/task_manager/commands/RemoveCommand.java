@@ -37,6 +37,5 @@ public class RemoveCommand implements Command {
         } else {
             new Utils().show(tr.getTasksByName(name), "no such tasks");
         }
-        in.close();
     }
 }
