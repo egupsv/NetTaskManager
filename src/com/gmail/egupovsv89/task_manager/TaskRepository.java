@@ -1,18 +1,27 @@
 package com.gmail.egupovsv89.task_manager;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Date;
-import java.util.Timer;
+import java.io.*;
+import java.util.*;
 
 public class TaskRepository implements Serializable {
     private List<Task> tasks;
     private static final long serialVersionUID = 1L;
+    private String path;
 
     public TaskRepository(List<Task> tasks) {
         this.tasks = tasks;
     }
+    public TaskRepository(String path) {
+        this.path = path;
+        try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path)))
+        {
+            this.tasks = (List<Task>) ois.readObject();
+        }
+        catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     public List<Task> getTasks() {
         return tasks;
     }
@@ -55,12 +64,22 @@ public class TaskRepository implements Serializable {
         tasks.clear();
     }
 
+    public void save() {
+        try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(path)))
+        {
+            oos.writeObject(tasks);
+            System.out.println("Data has been successfully saved to disk");
+        }
+        catch(IOException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
     public void inform() {
         for (Task task : tasks) {
             Timer timer = new Timer();
             timer.schedule(task, task.getTime());
         }
-
     }
 
 }

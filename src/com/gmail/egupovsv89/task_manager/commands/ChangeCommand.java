@@ -11,11 +11,9 @@ import java.util.Date;
 import java.util.Scanner;
 
 public class ChangeCommand implements Command {
-    private TaskRepository tr;
     private String field;
 
-    public ChangeCommand(TaskRepository tr, String field) {
-        this.tr = tr;
+    public ChangeCommand(String field) {
         this.field = field;
     }
 
@@ -35,7 +33,7 @@ public class ChangeCommand implements Command {
     }
 
     @Override
-    public void execute() throws IndexOutOfBoundsException {
+    public void execute(TaskRepository tr) throws IndexOutOfBoundsException {
         Scanner in = new Scanner(System.in);
         System.out.print("Input name of task (tasks) you want to change: ");
         String name = in.nextLine();

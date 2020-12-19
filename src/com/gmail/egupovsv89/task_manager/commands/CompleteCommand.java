@@ -8,18 +8,13 @@ import com.gmail.egupovsv89.task_manager.commands.util.Utils;
 import java.util.Scanner;
 
 public class CompleteCommand implements Command {
-    private TaskRepository tr;
-
-    public CompleteCommand(TaskRepository tr) {
-        this.tr = tr;
-    }
     @Override
     public void getDescription() {
         System.out.println("complete - complete any task");
     }
 
     @Override
-    public void execute() throws IndexOutOfBoundsException{
+    public void execute(TaskRepository tr) throws IndexOutOfBoundsException{
         Scanner in = new Scanner(System.in);
         System.out.print("Input name of task you want to complete: ");
         String name = in.nextLine();

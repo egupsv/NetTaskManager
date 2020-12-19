@@ -11,25 +11,21 @@ import java.util.Date;
 import java.util.Scanner;
 
 public class CopyCommand implements Command {
-    private TaskRepository tr;
 
-    public CopyCommand(TaskRepository tr) {
-        this.tr = tr;
-    }
     @Override
     public void getDescription() {
         System.out.println("copy - copy task (new task will be uncompleted)");
     }
 
     @Override
-    public void execute() throws IndexOutOfBoundsException{
+    public void execute(TaskRepository tr) throws IndexOutOfBoundsException{
         Scanner in = new Scanner(System.in);
         System.out.print("Input name of task you want to copy: ");
         String name = in.nextLine();
         in = new Scanner(System.in);
         System.out.print("Input time for new task: ");
         String timeInString = in.nextLine();
-        Date time = null;
+        Date time;
         try {
             time = new SimpleDateFormat("dd.MM.yyyy HH:mm").parse(timeInString);
             if (tr.getTasksByName(name).isEmpty()) {

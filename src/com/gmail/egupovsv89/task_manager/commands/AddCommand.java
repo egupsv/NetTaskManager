@@ -11,16 +11,10 @@ import java.util.Scanner;
 
 
 public class AddCommand implements Command {
-    private TaskRepository tr;
-
-    public AddCommand(TaskRepository tr) {
-        this.tr = tr;
-    }
-
     public void getDescription() {
         System.out.println("add - add new task;");
     }
-    public void execute() throws ParseException {
+    public void execute(TaskRepository tr) throws ParseException {
         Scanner in;
         in = new Scanner(System.in);
         System.out.print("Input name of task: ");

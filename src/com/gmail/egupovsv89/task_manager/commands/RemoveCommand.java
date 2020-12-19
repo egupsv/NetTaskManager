@@ -7,18 +7,14 @@ import com.gmail.egupovsv89.task_manager.commands.util.Utils;
 import java.util.Scanner;
 
 public class RemoveCommand implements Command {
-    private TaskRepository tr;
 
-    public RemoveCommand(TaskRepository tr) {
-        this.tr = tr;
-    }
     @Override
     public void getDescription() {
         System.out.println("remove - remove any task;");
     }
 
     @Override
-    public void execute() throws IndexOutOfBoundsException {
+    public void execute(TaskRepository tr) throws IndexOutOfBoundsException {
         Scanner in = new Scanner(System.in);
         System.out.print("Input name of task (tasks) you want to remove: ");
         String name = in.nextLine();
