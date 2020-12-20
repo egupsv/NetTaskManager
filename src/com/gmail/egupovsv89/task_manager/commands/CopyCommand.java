@@ -27,7 +27,7 @@ public class CopyCommand implements Command {
         String timeInString = in.nextLine();
         Date time;
         try {
-            time = new SimpleDateFormat("dd.MM.yyyy HH:mm").parse(timeInString);
+            time = new SimpleDateFormat("dd.MM.yyyy HH:mm").parse(timeInString); // TODO i've found "dd.MM.yyyy HH:mm" in 3 places, consider to move it into constant
             if (tr.getTasksByName(name).isEmpty()) {
                 Utils.show(tr.getTasksByName(name), "no such tasks");
                 in.close();

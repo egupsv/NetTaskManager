@@ -22,6 +22,7 @@ public class CompleteCommand implements Command {
             Utils.show(tr.getTasksByName(name), "no such tasks");
             return;
         }
+        //TODO 111 the same piece of code as in Copy command.
         Task task;
         if (tr.getTasksByName(name).size() > 1) {
             in = new Scanner(System.in);

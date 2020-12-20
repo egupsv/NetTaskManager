@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.Scanner;
 
 public class ChangeCommand implements Command {
-    private String field;
+    private String field; //todo check intetllij warning
 
     public ChangeCommand(String field) {
         this.field = field;
@@ -40,7 +40,7 @@ public class ChangeCommand implements Command {
         in = new Scanner(System.in);
         System.out.print("Input new " + field + " of this task: ");
         String newValue = in.nextLine();
-        if (tr.getTasksByName(name).size() == 1) {
+        if (tr.getTasksByName(name).size() == 1) { //todo tasks = tr.getTasksByName(name) you can extract it into some variable. Current problem - you search several time for the same task in repository
             Task task = tr.getTasksByName(name).get(0);
             chooseAction(task, newValue);
         } else if (!tr.getTasksByName(name).isEmpty()) {

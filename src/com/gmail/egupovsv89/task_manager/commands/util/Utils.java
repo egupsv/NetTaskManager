@@ -9,7 +9,7 @@ public class Utils {
         if (tasks.isEmpty()) {
             System.out.print(emptyMessage);
         }
-        int i = 0;
+        int i = 0; //todo it's better to name variables with no meaningfull name (i.e. counter/idx)
         for (Task task : tasks) {
             String isCompleted = task.isCompleted() ? "completed" : "not completed";
             i++;

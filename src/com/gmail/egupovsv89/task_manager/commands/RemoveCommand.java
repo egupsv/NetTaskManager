@@ -23,7 +23,7 @@ public class RemoveCommand implements Command {
         } else if (!tr.getTasksByName(name).isEmpty()) {
             in = new Scanner(System.in);
             System.out.print("Here more then one task with the same name, chose the number of one you need or input \"0\" if you want to remove all: ");
-            new Utils().show(tr.getTasksByName(name), "");
+            new Utils().show(tr.getTasksByName(name), ""); //TODO 333 show is static method, no need to create new instance of utils
             int num = in.nextInt();
             if (num == 0) {
                 tr.removeTask(name);
@@ -31,7 +31,7 @@ public class RemoveCommand implements Command {
                 tr.removeTask(name, num);
             }
         } else {
-            new Utils().show(tr.getTasksByName(name), "no such tasks");
+            new Utils().show(tr.getTasksByName(name), "no such tasks"); //TODO 333 show is static method, no need to create new instance of utils
         }
     }
 }

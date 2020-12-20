@@ -14,9 +14,9 @@ public class AddCommand implements Command {
     public void getDescription() {
         System.out.println("add - add new task;");
     }
-    public void execute(TaskRepository tr) throws ParseException {
+    public void execute(TaskRepository tr) throws ParseException { //todo unused exception ParseException
         Scanner in;
-        in = new Scanner(System.in);
+        in = new Scanner(System.in); //todo initialization and declaration splitted on 2 lines. Is it really required?
         System.out.print("Input name of task: ");
         String name = in.nextLine();
         in = new Scanner(System.in);
@@ -26,7 +26,7 @@ public class AddCommand implements Command {
         SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy HH:mm");
         System.out.print("Input date (DD.MM.YYYY) and time (hh:mm) for example '01.01.2030 11:30') ");
         String timeInString = in.nextLine();
-        Date time = null;
+        Date time = null; //todo pls check intelij warning
         try {
             time = formatter.parse(timeInString);
             tr.addTask(new Task(name, description, time));

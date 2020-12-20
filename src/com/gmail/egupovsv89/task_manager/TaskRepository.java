@@ -11,10 +11,12 @@ public class TaskRepository implements Serializable {
     public TaskRepository(List<Task> tasks) {
         this.tasks = tasks;
     }
+
     public TaskRepository(String path) {
         this.path = path;
         try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path)))
         {
+            //TODO use     @SuppressWarnings("unchecked") on the constructor
             this.tasks = (List<Task>) ois.readObject();
         }
         catch(Exception e) {
@@ -52,6 +54,7 @@ public class TaskRepository implements Serializable {
                 if (i == num) {
                     tasks.remove(task);
                 }
+
             }
         }
     }

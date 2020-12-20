@@ -14,5 +14,5 @@ public class ShowAllCommand implements Command {
     @Override
     public void execute(TaskRepository tr) {
         new Utils().show(tr.getTasks(), "no tasks");
-    }
+    } //TODO 333 show is static method, no need to create new instance of utils
 }

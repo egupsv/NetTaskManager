@@ -9,6 +9,7 @@ import java.util.Scanner;
 public class CommandLineUI {
     public static void main(String[] args) throws IndexOutOfBoundsException, ParseException {
         TaskRepository tr = new TaskRepository("tasks.txt");
+        //TODO 1. extract into constant commands
         HashMap<String, Command> commands = new HashMap<>();
         //tr.inform();
         commands.put("help", new HelpCommand());
@@ -27,8 +28,8 @@ public class CommandLineUI {
         Scanner in = new Scanner(System.in);
         System.out.print("Input a command (or input 'help' for list of commands): ");
         String command = in.nextLine();
-        while (!command.equals("exit")) {
-            commands.get(command).execute(tr);
+        while (!command.equals("exit")) { //TODO 2 compare constant vs variable not visa versa
+            commands.get(command).execute(tr); //todo 3 NPE check? is it possible that commands.get(command) returns null?
             in = new Scanner(System.in);
             System.out.print("\nInput a command (or input 'help' for list of commands): ");
             command = in.nextLine();
