@@ -14,7 +14,6 @@ import java.util.Scanner;
 
 public class ChangeCommand implements Command {
     private final String field;
-
     public ChangeCommand(String field) {
         this.field = field;
     }

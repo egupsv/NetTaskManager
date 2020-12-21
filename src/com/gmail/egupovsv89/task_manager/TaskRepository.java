@@ -53,6 +53,7 @@ public class TaskRepository implements Serializable {
                 if (i == num) {
                     tasks.remove(task);
                 }
+
             }
         }
     }

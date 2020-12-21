@@ -10,6 +10,7 @@ public class HelpCommand implements Command {
     public void getDescription() throws HelpException {
     }
 
+    //todo iterate over maps value? Pls refer to comment TODO 1. extract into constant commands
     @Override
     public void execute(TaskRepository tr) throws HelpException {
         System.out.println("list of commands:");

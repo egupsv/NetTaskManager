@@ -61,7 +61,11 @@ public class Task extends TimerTask implements Serializable {
         Scanner in = new Scanner(System.in);
         System.out.println("time for " + name + " has come");
         System.out.println("do you want to complete it right now? y/n");
+<<<<<<< HEAD
         if ("y".equals(in.nextLine())) {
+=======
+        if (in.nextLine() == "y") { // todo pls check https://stackoverflow.com/questions/513832/how-do-i-compare-strings-in-java
+>>>>>>> 6a470b598aa54a28b020a62a43db24e0ea934b71
             completed = true;
         }
     }
