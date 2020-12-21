@@ -1,9 +1,11 @@
 package com.gmail.egupovsv89.task_manager.commands;
 
 import com.gmail.egupovsv89.task_manager.Command;
+import com.gmail.egupovsv89.task_manager.Task;
 import com.gmail.egupovsv89.task_manager.TaskRepository;
 import com.gmail.egupovsv89.task_manager.commands.util.Utils;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class RemoveCommand implements Command {
@@ -18,12 +20,13 @@ public class RemoveCommand implements Command {
         Scanner in = new Scanner(System.in);
         System.out.print("Input name of task (tasks) you want to remove: ");
         String name = in.nextLine();
-        if (tr.getTasksByName(name).size() == 1) {
+        List<Task> tasks = tr.getTasksByName(name);
+        if (tasks.size() == 1) {
             tr.removeTask(name);
-        } else if (!tr.getTasksByName(name).isEmpty()) {
+        } else if (!tasks.isEmpty()) {
             in = new Scanner(System.in);
             System.out.print("Here more then one task with the same name, chose the number of one you need or input \"0\" if you want to remove all: ");
-            new Utils().show(tr.getTasksByName(name), "");
+            Utils.show(tasks, "");
             int num = in.nextInt();
             if (num == 0) {
                 tr.removeTask(name);
@@ -31,7 +34,7 @@ public class RemoveCommand implements Command {
                 tr.removeTask(name, num);
             }
         } else {
-            new Utils().show(tr.getTasksByName(name), "no such tasks");
+            Utils.show(tasks, "no such tasks");
         }
     }
 }

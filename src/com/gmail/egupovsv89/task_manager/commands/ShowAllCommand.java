@@ -13,6 +13,6 @@ public class ShowAllCommand implements Command {
 
     @Override
     public void execute(TaskRepository tr) {
-        new Utils().show(tr.getTasks(), "no tasks");
+        Utils.show(tr.getTasks(), "no tasks");
     }
 }

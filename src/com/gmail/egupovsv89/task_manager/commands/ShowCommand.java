@@ -18,6 +18,6 @@ System.out.println("show - show any task (tasks);");
         Scanner in = new Scanner(System.in);
         System.out.print("Input name of task (tasks) you want: ");
         String name = in.nextLine();
-        new Utils().show(tr.getTasksByName(name), "no such tasks");
+        Utils.show(tr.getTasksByName(name), "no such tasks");
     }
 }

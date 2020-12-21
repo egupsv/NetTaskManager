@@ -7,28 +7,34 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 public class CommandLineUI {
-    public static void main(String[] args) throws IndexOutOfBoundsException, ParseException {
+    public static final String TIMEFORMAT = "dd.MM.yyyy HH:mm";
+    public static final HashMap<String, Command> COMMANDS = new HashMap<>();
+    static {
+        COMMANDS.put("help", new HelpCommand());
+        COMMANDS.put("add", new AddCommand());
+        COMMANDS.put("show all", new ShowAllCommand());
+        COMMANDS.put("show", new ShowCommand());
+        COMMANDS.put("remove", new RemoveCommand());
+        COMMANDS.put("change d", new ChangeCommand("description"));
+        COMMANDS.put("change t", new ChangeCommand("time"));
+        COMMANDS.put("rename", new ChangeCommand("name"));
+        COMMANDS.put("copy", new CopyCommand());
+        COMMANDS.put("clear", new ClearCommand());
+        COMMANDS.put("complete", new CompleteCommand());
+        COMMANDS.put("save", new SaveCommand());
+    }
+    public static void main(String[] args) throws IndexOutOfBoundsException, ParseException, HelpException {
         TaskRepository tr = new TaskRepository("tasks.txt");
-        HashMap<String, Command> commands = new HashMap<>();
         //tr.inform();
-        commands.put("help", new HelpCommand());
-        commands.put("add", new AddCommand());
-        commands.put("show all", new ShowAllCommand());
-        commands.put("show", new ShowCommand());
-        commands.put("remove", new RemoveCommand());
-        commands.put("change d", new ChangeCommand("description"));
-        commands.put("change t", new ChangeCommand("time"));
-        commands.put("rename", new ChangeCommand("name"));
-        commands.put("copy", new CopyCommand());
-        commands.put("clear", new ClearCommand());
-        commands.put("complete", new CompleteCommand());
-        commands.put("save", new SaveCommand());
-
         Scanner in = new Scanner(System.in);
         System.out.print("Input a command (or input 'help' for list of commands): ");
         String command = in.nextLine();
-        while (!command.equals("exit")) {
-            commands.get(command).execute(tr);
+        while (!"exit".equals(command)) {
+            try {
+                COMMANDS.get(command).execute(tr);
+            } catch (NullPointerException e) {
+                System.out.println("No such command");;
+            }
             in = new Scanner(System.in);
             System.out.print("\nInput a command (or input 'help' for list of commands): ");
             command = in.nextLine();

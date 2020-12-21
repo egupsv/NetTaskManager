@@ -9,11 +9,11 @@ public class Utils {
         if (tasks.isEmpty()) {
             System.out.print(emptyMessage);
         }
-        int i = 0;
+        int index = 0;
         for (Task task : tasks) {
             String isCompleted = task.isCompleted() ? "completed" : "not completed";
-            i++;
-            System.out.print("\n" + i + ") name: " + task.getName() + "\ndescription: " + task.getDescription() +
+            index++;
+            System.out.print("\n" + index + ") name: " + task.getName() + "\ndescription: " + task.getDescription() +
                     "\ntime: " + task.getTime() + "\n" + isCompleted + "\n");
         }
     }

@@ -61,7 +61,7 @@ public class Task extends TimerTask implements Serializable {
         Scanner in = new Scanner(System.in);
         System.out.println("time for " + name + " has come");
         System.out.println("do you want to complete it right now? y/n");
-        if (in.nextLine() == "y") {
+        if ("y".equals(in.nextLine())) {
             completed = true;
         }
     }

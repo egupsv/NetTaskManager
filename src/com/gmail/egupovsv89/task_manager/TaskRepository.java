@@ -11,6 +11,7 @@ public class TaskRepository implements Serializable {
     public TaskRepository(List<Task> tasks) {
         this.tasks = tasks;
     }
+    @SuppressWarnings("unchecked")
     public TaskRepository(String path) {
         this.path = path;
         try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path)))

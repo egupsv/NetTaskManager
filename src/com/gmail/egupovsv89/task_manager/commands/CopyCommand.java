@@ -1,6 +1,7 @@
 package com.gmail.egupovsv89.task_manager.commands;
 
 import com.gmail.egupovsv89.task_manager.Command;
+import com.gmail.egupovsv89.task_manager.CommandLineUI;
 import com.gmail.egupovsv89.task_manager.Task;
 import com.gmail.egupovsv89.task_manager.TaskRepository;
 import com.gmail.egupovsv89.task_manager.commands.util.Utils;
@@ -8,6 +9,7 @@ import com.gmail.egupovsv89.task_manager.commands.util.Utils;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Scanner;
 
 public class CopyCommand implements Command {
@@ -27,20 +29,21 @@ public class CopyCommand implements Command {
         String timeInString = in.nextLine();
         Date time;
         try {
-            time = new SimpleDateFormat("dd.MM.yyyy HH:mm").parse(timeInString);
+            time = new SimpleDateFormat(CommandLineUI.TIMEFORMAT).parse(timeInString);
             if (tr.getTasksByName(name).isEmpty()) {
                 Utils.show(tr.getTasksByName(name), "no such tasks");
                 in.close();
                 return;
             }
             Task task;
-            if (tr.getTasksByName(name).size() > 1) {
+            List<Task> tasks = tr.getTasksByName(name);
+            if (tasks.size() > 1) {
                 in = new Scanner(System.in);
                 System.out.print("Here more then one task with the same name, chose the number of one you need: ");
-                Utils.show(tr.getTasksByName(name), "");
-                task = tr.getTasksByName(name).get(in.nextInt() - 1);
+                Utils.show(tasks, "");
+                task = tasks.get(in.nextInt() - 1);
             } else {
-                task = tr.getTasksByName(name).get(0);
+                task = tasks.get(0);
             }
             tr.addTask(new Task(task.getName(), task.getDescription(), time));
         } catch (ParseException e) {

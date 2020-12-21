@@ -5,6 +5,7 @@ import com.gmail.egupovsv89.task_manager.Task;
 import com.gmail.egupovsv89.task_manager.TaskRepository;
 import com.gmail.egupovsv89.task_manager.commands.util.Utils;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class CompleteCommand implements Command {
@@ -18,18 +19,19 @@ public class CompleteCommand implements Command {
         Scanner in = new Scanner(System.in);
         System.out.print("Input name of task you want to complete: ");
         String name = in.nextLine();
-        if (tr.getTasksByName(name).isEmpty()) {
-            Utils.show(tr.getTasksByName(name), "no such tasks");
+        List<Task> tasks = tr.getTasksByName(name);
+        if (tasks.isEmpty()) {
+            Utils.show(tasks, "no such tasks");
             return;
         }
         Task task;
-        if (tr.getTasksByName(name).size() > 1) {
+        if (tasks.size() > 1) {
             in = new Scanner(System.in);
             System.out.print("Here more then one task with the same name, chose the number of one you need: ");
-            Utils.show(tr.getTasksByName(name), "");
-            task = tr.getTasksByName(name).get(in.nextInt() - 1);
+            Utils.show(tasks, "");
+            task = tasks.get(in.nextInt() - 1);
         } else {
-            task = tr.getTasksByName(name).get(0);
+            task = tasks.get(0);
         }
         tr.completeTask(task);
     }
