@@ -2,6 +2,9 @@ package com.gmail.egupovsv89.task_manager;
 
 import com.gmail.egupovsv89.task_manager.commands.*;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.io.*;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -23,22 +26,26 @@ public class CommandLineUI {
         COMMANDS.put("complete", new CompleteCommand());
         COMMANDS.put("save", new SaveCommand());
     }
-    public static void main(String[] args) throws IndexOutOfBoundsException, ParseException, HelpException {
-        TaskRepository tr = new TaskRepository("tasks.txt");
-        //tr.inform();
-        Scanner in = new Scanner(System.in);
-        System.out.print("Input a command (or input 'help' for list of commands): ");
-        String command = in.nextLine();
+    public static void main(String[] args) throws IndexOutOfBoundsException, ParseException, HelpException, IOException {
+        TaskRepository tr;
+        BufferedReader br = new BufferedReader(new FileReader("tasks.txt"));
+        if (br.readLine() == null) {
+            tr = new TaskRepository(new ArrayList<>() );
+        } else {
+            tr = new TaskRepository("tasks.txt");
+        }
+        tr.inform();
+        final Console console = System.console();
+        String command = console.readLine("\nInput a command (or input 'help' for list of commands): ");
         while (!"exit".equals(command)) {
             try {
                 COMMANDS.get(command).execute(tr);
             } catch (NullPointerException e) {
-                System.out.println("No such command");;
+                System.out.println("No such command");
             }
-            in = new Scanner(System.in);
-            System.out.print("\nInput a command (or input 'help' for list of commands): ");
-            command = in.nextLine();
+            command = console.readLine("\nInput a command (or input 'help' for list of commands): ");
         }
-        in.close();
+        return;
+
     }
 }

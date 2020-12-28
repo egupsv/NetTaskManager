@@ -2,7 +2,6 @@ package com.gmail.egupovsv89.task_manager;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Scanner;
 import java.util.TimerTask;
 
 public class Task extends TimerTask implements Serializable {
@@ -10,18 +9,14 @@ public class Task extends TimerTask implements Serializable {
     private String name;
     private String description;
     private boolean completed = false;
+    private final int id;
     private Date time;
 
-    public Task(String name, Date time) {
-        this.name = name;
-        this.time = time;
-        this.description = "";
-    }
-
-    public Task(String name, String description, Date time) {
+    public Task(String name, String description, Date time, int id) {
         this.name = name;
         this.time = time;
         this.description = description;
+        this.id = id;
     }
 
     public String getName() {
@@ -40,6 +35,8 @@ public class Task extends TimerTask implements Serializable {
         return time;
     }
 
+    public int getId() { return id; }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -56,13 +53,24 @@ public class Task extends TimerTask implements Serializable {
         this.time = time;
     }
 
+
     @Override
     public void run() {
-        Scanner in = new Scanner(System.in);
-        System.out.println("time for " + name + " has come");
-        System.out.println("do you want to complete it right now? y/n");
-        if ("y".equals(in.nextLine())) {
-            completed = true;
+        final String answer = System.console().readLine("\r\ntime for " + name + " has come" + "\ndo you want to complete it right now? y/n ");
+        System.out.println("current answer [" + answer + "]");
+        if ("y".equals(answer)) {
+            setCompleted(true);
+            System.out.println("task has completed");
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", completed=" + completed +
+                ", time=" + time +
+                '}';
     }
 }

@@ -7,9 +7,13 @@ public class TaskRepository implements Serializable {
     private List<Task> tasks;
     private static final long serialVersionUID = 1L;
     private String path;
+    private final HashMap<Integer, Timer> timers = new HashMap<>();
 
     public TaskRepository(List<Task> tasks) {
         this.tasks = tasks;
+        for (Task task : tasks) {
+            this.timers.put(task.getId(), new Timer());
+        }
     }
     @SuppressWarnings("unchecked")
     public TaskRepository(String path) {
@@ -17,10 +21,24 @@ public class TaskRepository implements Serializable {
         try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path)))
         {
             this.tasks = (List<Task>) ois.readObject();
+            for (Task task : tasks) {
+                this.timers.put(task.getId(), new Timer());
+            }
         }
         catch(Exception e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public int calculateMaxId() {
+        int maxId = 0;
+        for (Task task : tasks) {
+            int id = task.getId();
+            if (id > maxId) {
+                maxId = id;
+            }
+        }
+        return maxId;
     }
 
     public List<Task> getTasks() {
@@ -29,10 +47,12 @@ public class TaskRepository implements Serializable {
 
     public void addTask(Task task) {
         this.tasks.add(task);
+        this.timers.put(task.getId(), new Timer());
+        timers.get(task.getId()).schedule(task, task.getTime());
     }
 
     public List<Task> getTasksByName(String name) {
-        List<Task> result = new ArrayList<Task>();
+        List<Task> result = new ArrayList<>();
         for (Task task : tasks) {
             if (task.getName().equals(name)) result.add(task);
         }
@@ -42,7 +62,10 @@ public class TaskRepository implements Serializable {
     public void removeTask(String name) {
         for (int i = 0; i < tasks.size(); i++) {
             Task task = tasks.get(i);
-            if (name.equals(task.getName())) tasks.remove(task);
+            if (name.equals(task.getName())) {
+                timers.get(task.getId()).cancel();
+                tasks.remove(task);
+            }
         }
     }
     public void removeTask(String name, int num) {
@@ -51,6 +74,7 @@ public class TaskRepository implements Serializable {
             if (name.equals(task.getName())) {
                 i++;
                 if (i == num) {
+                    timers.get(task.getId()).cancel();
                     tasks.remove(task);
                 }
 
@@ -64,6 +88,7 @@ public class TaskRepository implements Serializable {
 
     public void clear() {
         tasks.clear();
+        timers.clear();
     }
 
     public void save() {
@@ -77,11 +102,9 @@ public class TaskRepository implements Serializable {
         }
     }
 
-    public void inform() {
+    public void inform() throws NullPointerException {
         for (Task task : tasks) {
-            Timer timer = new Timer();
-            timer.schedule(task, task.getTime());
+            timers.get(task.getId()).schedule(task, task.getTime());
         }
     }
-
 }

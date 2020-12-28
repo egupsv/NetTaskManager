@@ -6,11 +6,11 @@ import com.gmail.egupovsv89.task_manager.Task;
 import com.gmail.egupovsv89.task_manager.TaskRepository;
 import com.gmail.egupovsv89.task_manager.commands.util.Utils;
 
+import java.io.Console;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Date;
-import java.util.Scanner;
 
 public class ChangeCommand implements Command {
     private final String field;
@@ -35,21 +35,17 @@ public class ChangeCommand implements Command {
 
     @Override
     public void execute(TaskRepository tr) throws IndexOutOfBoundsException {
-        Scanner in = new Scanner(System.in);
-        System.out.print("Input name of task (tasks) you want to change: ");
-        String name = in.nextLine();
-        in = new Scanner(System.in);
-        System.out.print("Input new " + field + " of this task: ");
-        String newValue = in.nextLine();
+        final Console console = System.console();
+        String name = console.readLine("Input name of task (tasks) you want to change: ");
+        String newValue = console.readLine("Input new " + field + " of this task: ");
         List<Task> tasks = tr.getTasksByName(name);
         if (tasks.size() == 1) {
             Task task = tasks.get(0);
             chooseAction(task, newValue);
         } else if (!tasks.isEmpty()) {
-            in = new Scanner(System.in);
             System.out.print("Here more then one task with the same name, chose the number of one you need or input \"0\" if you want to change all: ");
             Utils.show(tasks, "");
-            int num = in.nextInt();
+            int num = Integer.parseInt(console.readLine());
             if (num == 0) {
                 for (Task task : tasks) {
                     chooseAction(task, newValue);
