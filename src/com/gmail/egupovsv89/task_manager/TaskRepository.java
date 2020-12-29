@@ -6,27 +6,24 @@ import java.util.*;
 public class TaskRepository implements Serializable {
     private List<Task> tasks;
     private static final long serialVersionUID = 1L;
-    private String path;
+    private final String path;
     private final HashMap<Integer, Timer> timers = new HashMap<>();
 
-    public TaskRepository(List<Task> tasks) {
-        this.tasks = tasks;
-        for (Task task : tasks) {
-            this.timers.put(task.getId(), new Timer());
-        }
-    }
     @SuppressWarnings("unchecked")
-    public TaskRepository(String path) {
+    public TaskRepository(String path) throws IOException {
         this.path = path;
-        try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path)))
-        {
-            this.tasks = (List<Task>) ois.readObject();
-            for (Task task : tasks) {
-                this.timers.put(task.getId(), new Timer());
+        BufferedReader br = new BufferedReader(new FileReader(path));
+        if (br.readLine() == null) {
+            this.tasks = new ArrayList<>();
+        } else {
+            try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path))) {
+                this.tasks = (List<Task>) ois.readObject();
+                for (Task task : tasks) {
+                    this.timers.put(task.getId(), new Timer());
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
-        }
-        catch(Exception e) {
-            System.out.println(e.getMessage());
         }
     }
 

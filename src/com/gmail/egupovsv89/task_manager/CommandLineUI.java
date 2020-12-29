@@ -2,12 +2,10 @@ package com.gmail.egupovsv89.task_manager;
 
 import com.gmail.egupovsv89.task_manager.commands.*;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.io.*;
 import java.text.ParseException;
 import java.util.HashMap;
-import java.util.Scanner;
+
 
 public class CommandLineUI {
     public static final String TIMEFORMAT = "dd.MM.yyyy HH:mm";
@@ -27,13 +25,7 @@ public class CommandLineUI {
         COMMANDS.put("save", new SaveCommand());
     }
     public static void main(String[] args) throws IndexOutOfBoundsException, ParseException, HelpException, IOException {
-        TaskRepository tr;
-        BufferedReader br = new BufferedReader(new FileReader("tasks.txt"));
-        if (br.readLine() == null) {
-            tr = new TaskRepository(new ArrayList<>() );
-        } else {
-            tr = new TaskRepository("tasks.txt");
-        }
+        TaskRepository tr = new TaskRepository("tasks.txt");
         tr.inform();
         final Console console = System.console();
         String command = console.readLine("\nInput a command (or input 'help' for list of commands): ");
@@ -45,7 +37,6 @@ public class CommandLineUI {
             }
             command = console.readLine("\nInput a command (or input 'help' for list of commands): ");
         }
-        return;
-
+        System.exit(0);
     }
 }
