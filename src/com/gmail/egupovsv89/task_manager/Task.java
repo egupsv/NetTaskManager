@@ -2,9 +2,8 @@ package com.gmail.egupovsv89.task_manager;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.TimerTask;
 
-public class Task extends TimerTask implements Serializable {
+public class Task implements Serializable {
     private static final long serialVersionUID = 1L;
     private String name;
     private String description;
@@ -51,17 +50,6 @@ public class Task extends TimerTask implements Serializable {
 
     public void setTime(Date time) {
         this.time = time;
-    }
-
-
-    @Override
-    public void run() {
-        final String answer = System.console().readLine("\r\ntime for " + name + " has come" + "\ndo you want to complete it right now? y/n ");
-        System.out.println("current answer [" + answer + "]");
-        if ("y".equals(answer)) {
-            setCompleted(true);
-            System.out.println("task has completed");
-        }
     }
 
     @Override

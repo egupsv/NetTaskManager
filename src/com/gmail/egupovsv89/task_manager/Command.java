@@ -1,8 +1,11 @@
 package com.gmail.egupovsv89.task_manager;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.text.ParseException;
 
 public interface Command {
-    void getDescription () throws HelpException;
-    void execute(TaskRepository tr) throws ParseException, HelpException;
+    String getDescription () throws HelpException;
+    void execute(TaskRepository tr, DataInputStream dis, DataOutputStream dos) throws ParseException, HelpException, IOException;
 }

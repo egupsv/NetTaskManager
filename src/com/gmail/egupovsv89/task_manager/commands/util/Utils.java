@@ -5,16 +5,19 @@ import com.gmail.egupovsv89.task_manager.Task;
 import java.util.List;
 
 public class Utils {
-    public static void show(List<Task> tasks, String emptyMessage) {
+    public static String show(List<Task> tasks, String emptyMessage) {
         if (tasks.isEmpty()) {
-            System.out.print(emptyMessage);
+            return emptyMessage;
         }
+        StringBuilder message = new StringBuilder();
         int index = 0;
         for (Task task : tasks) {
             String isCompleted = task.isCompleted() ? "completed" : "not completed";
             index++;
-            System.out.print("\n" + index + ") name: " + task.getName() + "\ndescription: " + task.getDescription() +
-                    "\ntime: " + task.getTime() + "\n" + isCompleted + "\n");
+            message.append("\n").append(index).append(") name: ").append(task.getName()).
+                    append("\ndescription: ").append(task.getDescription()).append("\ntime: ").append(task.getTime()).
+                    append("\n").append(isCompleted).append("\n");
         }
+        return message.toString();
     }
 }

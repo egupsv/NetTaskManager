@@ -1,26 +1,28 @@
 package com.gmail.egupovsv89.task_manager;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class TaskRepository implements Serializable {
+public class TaskRepository extends TimerTask implements Serializable {
     private List<Task> tasks;
+    private final DataInputStream dis;
+    private final DataOutputStream dos;
     private static final long serialVersionUID = 1L;
     private final String path;
-    private final HashMap<Integer, Timer> timers = new HashMap<>();
+    public static final String TIMEFORMAT = "dd.MM.yyyy HH:mm";
 
     @SuppressWarnings("unchecked")
-    public TaskRepository(String path) throws IOException {
+    public TaskRepository(String path, DataInputStream dis, DataOutputStream dos) throws IOException {
         this.path = path;
+        this.dis = dis;
+        this.dos = dos;
         BufferedReader br = new BufferedReader(new FileReader(path));
         if (br.readLine() == null) {
             this.tasks = new ArrayList<>();
         } else {
             try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path))) {
                 this.tasks = (List<Task>) ois.readObject();
-                for (Task task : tasks) {
-                    this.timers.put(task.getId(), new Timer());
-                }
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
@@ -44,8 +46,6 @@ public class TaskRepository implements Serializable {
 
     public void addTask(Task task) {
         this.tasks.add(task);
-        this.timers.put(task.getId(), new Timer());
-        timers.get(task.getId()).schedule(task, task.getTime());
     }
 
     public List<Task> getTasksByName(String name) {
@@ -60,7 +60,6 @@ public class TaskRepository implements Serializable {
         for (int i = 0; i < tasks.size(); i++) {
             Task task = tasks.get(i);
             if (name.equals(task.getName())) {
-                timers.get(task.getId()).cancel();
                 tasks.remove(task);
             }
         }
@@ -71,7 +70,6 @@ public class TaskRepository implements Serializable {
             if (name.equals(task.getName())) {
                 i++;
                 if (i == num) {
-                    timers.get(task.getId()).cancel();
                     tasks.remove(task);
                 }
 
@@ -85,7 +83,6 @@ public class TaskRepository implements Serializable {
 
     public void clear() {
         tasks.clear();
-        timers.clear();
     }
 
     public void save() {
@@ -99,9 +96,26 @@ public class TaskRepository implements Serializable {
         }
     }
 
-    public void inform() throws NullPointerException {
+    @Override
+    public void run() {
+        Date dateNow = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat(TIMEFORMAT);
         for (Task task : tasks) {
-            timers.get(task.getId()).schedule(task, task.getTime());
+            if(formatter.format(task.getTime()).equals(formatter.format(dateNow))) {
+                try {
+                    dos.writeUTF("\r\ntime for " + task.getName() + " has come" + "\ndo you want to complete it right now? y/n ");
+                    String answer = dis.readUTF();
+                    if ("y".equals(answer)) {
+                        task.setCompleted(true);
+                        dos.writeUTF("task has completed, press any key");
+                        dis.readUTF();
+                        dos.writeUTF("OK");
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
+
 }

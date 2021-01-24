@@ -5,27 +5,33 @@ import com.gmail.egupovsv89.task_manager.CommandLineUI;
 import com.gmail.egupovsv89.task_manager.Task;
 import com.gmail.egupovsv89.task_manager.TaskRepository;
 
-import java.io.Console;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class AddCommand implements Command {
-    public void getDescription() {
-        System.out.println("add - add new task;");
+    public String getDescription() {
+        return "add - add new task;";
     }
-    public void execute(TaskRepository tr) {
-        final Console console = System.console();
-        String name = console.readLine("Input name of task: ");
-        String description = console.readLine("Input description of task: ");
+    public void execute(TaskRepository tr, DataInputStream dis, DataOutputStream dos) throws IOException {
+        dos.writeUTF("Input name of task: ");
+        String name = dis.readUTF();
+        dos.writeUTF("Input description of task: ");
+        String description = dis.readUTF();
         SimpleDateFormat formatter = new SimpleDateFormat(CommandLineUI.TIMEFORMAT);
-        String timeInString = console.readLine("Input date (DD.MM.YYYY) and time (hh:mm) for example '01.01.2030 11:30'): ");
+        dos.writeUTF("Input date (DD.MM.YYYY) and time (hh:mm) for example '01.01.2030 11:30'): ");
+        String timeInString = dis.readUTF();
         Date time;
         try {
             time = formatter.parse(timeInString);
             tr.addTask(new Task(name, description, time, tr.calculateMaxId() + 1));
         } catch (ParseException e) {
-            System.out.println("wrong date/time format");
+            dos.writeUTF("wrong date/time format, press any key");
+            dis.readUTF();
         }
+        dos.writeUTF("OK");
     }
 }

@@ -6,7 +6,9 @@ import com.gmail.egupovsv89.task_manager.Task;
 import com.gmail.egupovsv89.task_manager.TaskRepository;
 import com.gmail.egupovsv89.task_manager.commands.util.Utils;
 
-import java.io.Console;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -19,43 +21,54 @@ public class ChangeCommand implements Command {
     }
 
     @Override
-    public void getDescription() {
+    public String getDescription() {
+        String result;
         switch (field) {
             case ("name"):
-                System.out.println("rename - rename any task");
+                result = "rename - rename any task";
                 break;
             case ("description"):
-                System.out.println("change d - change description of any task;");
+                result ="change d - change description of any task;";
                 break;
             case ("time"):
-                System.out.println("change t - change time of any task;");
+                result = "change t - change time of any task;";
                 break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + field);
         }
+        return result;
     }
 
     @Override
-    public void execute(TaskRepository tr) throws IndexOutOfBoundsException {
-        final Console console = System.console();
-        String name = console.readLine("Input name of task (tasks) you want to change: ");
-        String newValue = console.readLine("Input new " + field + " of this task: ");
+    public void execute(TaskRepository tr, DataInputStream dis, DataOutputStream dos) throws IndexOutOfBoundsException, IOException {
+        dos.writeUTF("Input name of task (tasks) you want to change: ");
+        String name = dis.readUTF();
+        dos.writeUTF("Input new " + field + " of this task: ");
+        String newValue = dis.readUTF();
         List<Task> tasks = tr.getTasksByName(name);
         if (tasks.size() == 1) {
             Task task = tasks.get(0);
             chooseAction(task, newValue);
+            dos.writeUTF("OK");
         } else if (!tasks.isEmpty()) {
-            System.out.print("Here more then one task with the same name, chose the number of one you need or input \"0\" if you want to change all: ");
-            Utils.show(tasks, "");
-            int num = Integer.parseInt(console.readLine());
-            if (num == 0) {
-                for (Task task : tasks) {
+            dos.writeUTF("Here more then one task with the same name, chose the number of one you need or input \"0\" if you want to change all: " + Utils.show(tasks, ""));
+            int num;
+            do {
+                num = Integer.parseInt(dis.readUTF());
+                if (num == 0) {
+                    for (Task task : tasks) {
+                        chooseAction(task, newValue);
+                    }
+                } else if (num > 0 && num <= tasks.size()) {
+                    Task task = tasks.get(num - 1);
                     chooseAction(task, newValue);
+                } else {
+                    dos.writeUTF("wrong number, try again");
                 }
-            } else {
-                Task task = tasks.get(num - 1);
-                chooseAction(task, newValue);
-            }
+            } while (num < 0 || num > tasks.size());
+            dos.writeUTF("OK");
         } else {
-            Utils.show(tasks, "no such tasks");
+            dos.writeUTF(Utils.show(tasks, "error: no such tasks"));
         }
     }
 

@@ -3,14 +3,19 @@ package com.gmail.egupovsv89.task_manager.commands;
 import com.gmail.egupovsv89.task_manager.Command;
 import com.gmail.egupovsv89.task_manager.TaskRepository;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+
 public class ClearCommand implements Command {
     @Override
-    public void getDescription() {
-        System.out.println("clear - clear list of tasks;");
+    public String getDescription() {
+        return "clear - clear list of tasks;";
     }
 
     @Override
-    public void execute(TaskRepository tr) {
+    public void execute(TaskRepository tr, DataInputStream dis, DataOutputStream dos) throws IOException {
         tr.clear();
+        dos.writeUTF("OK");
     }
 }

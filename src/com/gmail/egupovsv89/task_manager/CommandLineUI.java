@@ -2,10 +2,7 @@ package com.gmail.egupovsv89.task_manager;
 
 import com.gmail.egupovsv89.task_manager.commands.*;
 
-import java.io.*;
-import java.text.ParseException;
 import java.util.HashMap;
-
 
 public class CommandLineUI {
     public static final String TIMEFORMAT = "dd.MM.yyyy HH:mm";
@@ -22,21 +19,5 @@ public class CommandLineUI {
         COMMANDS.put("copy", new CopyCommand());
         COMMANDS.put("clear", new ClearCommand());
         COMMANDS.put("complete", new CompleteCommand());
-        COMMANDS.put("save", new SaveCommand());
-    }
-    public static void main(String[] args) throws IndexOutOfBoundsException, ParseException, HelpException, IOException {
-        TaskRepository tr = new TaskRepository("tasks.txt");
-        tr.inform();
-        final Console console = System.console();
-        String command = console.readLine("\nInput a command (or input 'help' for list of commands): ");
-        while (!"exit".equals(command)) {
-            try {
-                COMMANDS.get(command).execute(tr);
-            } catch (NullPointerException e) {
-                System.out.println("No such command");
-            }
-            command = console.readLine("\nInput a command (or input 'help' for list of commands): ");
-        }
-        System.exit(0);
     }
 }
