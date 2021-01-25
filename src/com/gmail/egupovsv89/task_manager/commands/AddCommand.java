@@ -12,10 +12,25 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * The {@code AddCommand} class adds new task to task repository
+ */
 public class AddCommand implements Command {
+
+    /**
+     * provides description of command used in console interface (displayed when user input 'help' command).
+     * @return  The resulting string which is part of user manual
+     */
     public String getDescription() {
         return "add - add new task;";
     }
+
+    /**
+     * runs execution of command
+     * @param   tr task repository (user works with)
+     * @param   dis data input stream
+     * @param   dos data output stream
+     */
     public void execute(TaskRepository tr, DataInputStream dis, DataOutputStream dos) throws IOException {
         dos.writeUTF("Input name of task: ");
         String name = dis.readUTF();

@@ -107,7 +107,7 @@ public class TaskRepository extends TimerTask implements Serializable {
                     String answer = dis.readUTF();
                     if ("y".equals(answer)) {
                         task.setCompleted(true);
-                        dos.writeUTF("task has completed, press any key");
+                        dos.writeUTF("task has completed, press \"Enter\"");
                         dis.readUTF();
                         dos.writeUTF("OK");
                     }

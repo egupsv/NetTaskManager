@@ -4,7 +4,18 @@ import com.gmail.egupovsv89.task_manager.Task;
 
 import java.util.List;
 
+/**
+ * The {@code Utils} class provides method(s) which can do auxiliary actions helpful for other classes
+ */
 public class Utils {
+    /**
+     * provides list of tasks in human-readable way.
+     * @param   tasks
+     *          list of tasks to show
+     * @param   emptyMessage
+     *          message for case of empty list
+     * @return  The resulting string
+     */
     public static String show(List<Task> tasks, String emptyMessage) {
         if (tasks.isEmpty()) {
             return emptyMessage;

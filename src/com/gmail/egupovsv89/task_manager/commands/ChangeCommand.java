@@ -14,12 +14,27 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Date;
 
+/**
+ * The {@code ChangeCommand} class changes any field of task(s)
+ */
 public class ChangeCommand implements Command {
+    /**
+     * field which must be changed (name, description or time)
+     */
     private final String field;
+
+    /**
+     * Initializes a newly created {@code ChangeCommand} object which works with one field
+     */
     public ChangeCommand(String field) {
         this.field = field;
     }
 
+    /**
+     * provides description of command used in console interface (displayed when user input 'help' command).
+     * work with different fields is provided by using different commands for console interface
+     * @return  The resulting string which is part of user manual
+     */
     @Override
     public String getDescription() {
         String result;
@@ -39,6 +54,12 @@ public class ChangeCommand implements Command {
         return result;
     }
 
+    /**
+     * runs execution of command
+     * @param   tr task repository (user works with)
+     * @param   dis data input stream
+     * @param   dos data output stream
+     */
     @Override
     public void execute(TaskRepository tr, DataInputStream dis, DataOutputStream dos) throws IndexOutOfBoundsException, IOException {
         dos.writeUTF("Input name of task (tasks) you want to change: ");
@@ -46,6 +67,9 @@ public class ChangeCommand implements Command {
         dos.writeUTF("Input new " + field + " of this task: ");
         String newValue = dis.readUTF();
         List<Task> tasks = tr.getTasksByName(name);
+        /*
+         * name is not unique parameter of task so options are possible
+         */
         if (tasks.size() == 1) {
             Task task = tasks.get(0);
             chooseAction(task, newValue);
@@ -53,6 +77,10 @@ public class ChangeCommand implements Command {
         } else if (!tasks.isEmpty()) {
             dos.writeUTF("Here more then one task with the same name, chose the number of one you need or input \"0\" if you want to change all: " + Utils.show(tasks, ""));
             int num;
+            /*
+             * getting a specific number of task from user.
+             * this command can work with all tasks with the same name (when user inputs '0')
+             */
             do {
                 num = Integer.parseInt(dis.readUTF());
                 if (num == 0) {

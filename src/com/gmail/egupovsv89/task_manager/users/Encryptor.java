@@ -7,10 +7,20 @@ import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
+/**
+ * The {@code Encryptor} class encrypts string (in this case class is used to encrypt password before this password will
+ * be sent to server)
+ */
 public class Encryptor {
+    /**
+     * cryptographic cipher for encryption
+     */
     private final Cipher cipher;
     SecretKey key;
 
+    /**
+     * Initializes a newly created {@code Encryptor} object
+     */
     public Encryptor() throws NoSuchPaddingException, NoSuchAlgorithmException {
         this.cipher = Cipher.getInstance("AES");
         KeyGenerator keyGen = KeyGenerator.getInstance("AES");
@@ -28,6 +38,11 @@ public class Encryptor {
         }
     }
 
+    /**
+     * runs encryption of specific string
+     * @param   password password inputted by user
+     * @return The resulting encrypted password
+     */
     public String encrypt(String password) {
         String result = null;
         try {
