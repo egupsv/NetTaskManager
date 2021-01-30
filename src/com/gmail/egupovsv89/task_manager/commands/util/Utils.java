@@ -2,6 +2,10 @@ package com.gmail.egupovsv89.task_manager.commands.util;
 
 import com.gmail.egupovsv89.task_manager.Task;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,5 +34,31 @@ public class Utils {
                     append("\n").append(isCompleted).append("\n");
         }
         return message.toString();
+    }
+
+    public List<Task> getRequiredTasks(List<Task> tasks, DataInputStream dis, DataOutputStream dos, boolean isZeroUsed) throws IOException {
+        List<Task> result = new ArrayList<>();
+        if (tasks.size() == 1) {
+            return tasks;
+        }
+        dos.writeUTF("Here more then one task with the same name, chose the number of one you need or " +
+                "input \"0\" if you want to remove all: " + Utils.show(tasks, ""));
+        int num;
+        int lowerValue = isZeroUsed ? 0 : 1;
+        /*
+         * getting a specific number of task from user.
+         * this command can work with all tasks with the same name (when user inputs '0')
+         */
+        do {
+            num = Integer.parseInt(dis.readUTF());
+            if (num == 0 && isZeroUsed) {
+                result = tasks;
+            } else if (num > 0 && num <= tasks.size()) {
+                result.add(tasks.get(num - 1));
+            } else {
+                dos.writeUTF("wrong number, try again\n");
+            }
+        } while (num < lowerValue || num > tasks.size());
+        return result;
     }
 }

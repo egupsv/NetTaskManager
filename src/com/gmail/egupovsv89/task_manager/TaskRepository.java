@@ -56,14 +56,10 @@ public class TaskRepository extends TimerTask implements Serializable {
         return result;
     }
 
-    public void removeTask(String name) {
-        for (int i = 0; i < tasks.size(); i++) {
-            Task task = tasks.get(i);
-            if (name.equals(task.getName())) {
-                tasks.remove(task);
-            }
-        }
+    public void removeTasks(List<Task> requiredTasks) {
+        tasks.removeAll(requiredTasks);
     }
+
     public void removeTask(String name, int num) {
         for (int i = 0; i < tasks.size(); i++) {
             Task task = tasks.get(i);

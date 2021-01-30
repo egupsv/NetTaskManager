@@ -38,31 +38,14 @@ public class RemoveCommand implements Command {
         /*
          * name is not unique parameter of task so options are possible
          */
-        if (tasks.size() == 1) {
-            tr.removeTask(name);
-            dos.writeUTF("OK");
-        } else if (!tasks.isEmpty()) {
-            dos.writeUTF("Here more then one task with the same name, chose the number of one you need or " +
-                    "input \"0\" if you want to remove all: " + Utils.show(tasks, ""));
-            int num;
-            /*
-             * getting a specific number of task from user.
-             * this command can work with all tasks with the same name (when user inputs '0')
-             */
-            do {
-                num = Integer.parseInt(dis.readUTF());
-                if (num == 0) {
-                    tr.removeTask(name);
-                } else if (num > 0 && num <= tasks.size()) {
-                    tr.removeTask(name, num - 1);
-                } else {
-                    dos.writeUTF("wrong number, try again\n");
-                }
-            } while (num < 0 || num > tasks.size());
-        } else {
+        if (tasks.isEmpty()) {
             dos.writeUTF(Utils.show(tasks, "no such tasks, press \"Enter\""));
             dis.readUTF();
+        } else {
+            List<Task> requiredTasks = new Utils().getRequiredTasks(tasks, dis, dos, true);
+            tr.removeTasks(requiredTasks);
         }
+
         dos.writeUTF("OK");
     }
 }
