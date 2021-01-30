@@ -34,34 +34,11 @@ public class CompleteCommand implements Command {
         dos.writeUTF("Input name of task you want to complete: ");
         String name = dis.readUTF();
         List<Task> tasks = tr.getTasksByName(name);
-        /*
-         * name is not unique parameter of task so options are possible
-         */
-        if (tasks.isEmpty()) {
-            dos.writeUTF(Utils.show(tasks, "no such tasks, press \"Enter\""));
-            dis.readUTF();
-            dos.writeUTF("OK");
-            return;
+        List<Task> requiredTasks = Utils.getRequiredTasks(tasks, dis, dos, false);
+        if (requiredTasks != null) {
+            Task task = requiredTasks.get(0);
+            tr.completeTask(task);
         }
-        Task task = null;
-        int num;
-        if (tasks.size() > 1) {
-            dos.writeUTF("Here more then one task with the same name, chose the number of one you need: " + Utils.show(tasks, ""));
-            /*
-             * getting a specific number of task from user.
-             */
-            do {
-                num = Integer.parseInt(dis.readUTF());
-                if (num > 0 && num <= tasks.size()) {
-                    task = tasks.get(num - 1);
-                } else {
-                    dos.writeUTF("wrong number, try again\n");
-                }
-            } while (num <= 0 || num > tasks.size());
-        } else {
-            task = tasks.get(0);
-        }
-        tr.completeTask(task);
         dos.writeUTF("OK");
     }
 }

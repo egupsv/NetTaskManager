@@ -42,36 +42,19 @@ public class CopyCommand implements Command {
         String timeInString = dis.readUTF();
         Date time;
         try {
-            time = new SimpleDateFormat(CommandLineUI.TIMEFORMAT).parse(timeInString);
+            time = new SimpleDateFormat(TaskRepository.TIMEFORMAT).parse(timeInString);
             if (tr.getTasksByName(name).isEmpty()) {
                 dos.writeUTF(Utils.show(tr.getTasksByName(name), "no such tasks, press \"Enter\""));
                 dis.readUTF();
                 dos.writeUTF("OK");
                 return;
             }
-            Task task = null;
             List<Task> tasks = tr.getTasksByName(name);
-            /*
-             * name is not unique parameter of task so options are possible
-             */
-            if (tasks.size() > 1) {
-                dos.writeUTF("Here more then one task with the same name, chose the number of one you need: " + Utils.show(tasks, ""));
-                int num;
-                /*
-                 * getting a specific number of task from user.
-                 */
-                do {
-                    num = Integer.parseInt(dis.readUTF());
-                    if (num > 0 && num <= tasks.size()) {
-                        task = tasks.get(num - 1);
-                    } else {
-                        dos.writeUTF("wrong number, try again\n");
-                    }
-                } while (num <= 0 || num > tasks.size());
-            } else {
-                task = tasks.get(0);
+            List<Task> requiredTasks = Utils.getRequiredTasks(tasks, dis, dos, false);
+            if (requiredTasks != null) {
+                Task task = requiredTasks.get(0);
+                tr.addTask(new Task(task.getName(), task.getDescription(), time, tr.calculateMaxId() + 1));
             }
-            tr.addTask(new Task(task.getName(), task.getDescription(), time, tr.calculateMaxId() + 1));
             dos.writeUTF("OK");
         } catch (ParseException e) {
             dos.writeUTF("wrong date/time format, press \"Enter\"");

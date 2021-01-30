@@ -35,17 +35,10 @@ public class RemoveCommand implements Command {
         dos.writeUTF("Input name of task (tasks) you want to remove: ");
         String name = dis.readUTF();
         List<Task> tasks = tr.getTasksByName(name);
-        /*
-         * name is not unique parameter of task so options are possible
-         */
-        if (tasks.isEmpty()) {
-            dos.writeUTF(Utils.show(tasks, "no such tasks, press \"Enter\""));
-            dis.readUTF();
-        } else {
-            List<Task> requiredTasks = new Utils().getRequiredTasks(tasks, dis, dos, true);
+        List<Task> requiredTasks = Utils.getRequiredTasks(tasks, dis, dos, true);
+        if (requiredTasks != null) {
             tr.removeTasks(requiredTasks);
         }
-
         dos.writeUTF("OK");
     }
 }

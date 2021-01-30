@@ -36,7 +36,7 @@ public class AddCommand implements Command {
         String name = dis.readUTF();
         dos.writeUTF("Input description of task: ");
         String description = dis.readUTF();
-        SimpleDateFormat formatter = new SimpleDateFormat(CommandLineUI.TIMEFORMAT);
+        SimpleDateFormat formatter = new SimpleDateFormat(TaskRepository.TIMEFORMAT);
         dos.writeUTF("Input date (DD.MM.YYYY) and time (hh:mm) for example '01.01.2030 11:30'): ");
         String timeInString = dis.readUTF();
         Date time;

@@ -67,39 +67,20 @@ public class ChangeCommand implements Command {
         dos.writeUTF("Input new " + field + " of this task: ");
         String newValue = dis.readUTF();
         List<Task> tasks = tr.getTasksByName(name);
-        /*
-         * name is not unique parameter of task so options are possible
-         */
-        if (tasks.size() == 1) {
-            Task task = tasks.get(0);
-            chooseAction(task, newValue);
-            dos.writeUTF("OK");
-        } else if (!tasks.isEmpty()) {
-            dos.writeUTF("Here more then one task with the same name, chose the number of one you need or input \"0\" if you want to change all: " + Utils.show(tasks, ""));
-            int num;
-            /*
-             * getting a specific number of task from user.
-             * this command can work with all tasks with the same name (when user inputs '0')
-             */
-            do {
-                num = Integer.parseInt(dis.readUTF());
-                if (num == 0) {
-                    for (Task task : tasks) {
-                        chooseAction(task, newValue);
-                    }
-                } else if (num > 0 && num <= tasks.size()) {
-                    Task task = tasks.get(num - 1);
-                    chooseAction(task, newValue);
-                } else {
-                    dos.writeUTF("wrong number, try again");
-                }
-            } while (num < 0 || num > tasks.size());
-            dos.writeUTF("OK");
-        } else {
-            dos.writeUTF(Utils.show(tasks, "error: no such tasks"));
+        List<Task> requiredTasks = Utils.getRequiredTasks(tasks, dis, dos, true);
+        if (requiredTasks != null) {
+            for (Task task : requiredTasks) {
+                chooseAction(task, newValue);
+            }
         }
+        dos.writeUTF("OK");
     }
 
+    /**
+     * allows to select a field depending on the command
+     * @param   task changing task
+     * @param   newValue new value of changing field
+     */
     private void chooseAction(Task task, String newValue) {
         switch (field) {
             case ("name"):
@@ -109,7 +90,7 @@ public class ChangeCommand implements Command {
                 task.setDescription(newValue);
                 break;
             case ("time"):
-                SimpleDateFormat formatter = new SimpleDateFormat(CommandLineUI.TIMEFORMAT);
+                SimpleDateFormat formatter = new SimpleDateFormat(TaskRepository.TIMEFORMAT);
                 try {
                     Date time = formatter.parse(newValue);
                     task.setTime(time);

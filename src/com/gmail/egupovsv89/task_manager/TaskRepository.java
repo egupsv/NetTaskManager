@@ -4,12 +4,35 @@ import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+/**
+ * The {@code Users} class represents repository of tasks.
+ * this repository is stored in separate file for every single user
+ */
 public class TaskRepository extends TimerTask implements Serializable {
+    /**
+     * list of tasks
+     */
     private List<Task> tasks;
+
+    /**
+     * data input stream
+     */
     private final DataInputStream dis;
+
+    /**
+     * data output stream
+     */
     private final DataOutputStream dos;
     private static final long serialVersionUID = 1L;
+
+    /**
+     * path to user's file which contains repository
+     */
     private final String path;
+
+    /**
+     * template for time used when user inputs time
+     */
     public static final String TIMEFORMAT = "dd.MM.yyyy HH:mm";
 
     @SuppressWarnings("unchecked")
@@ -29,6 +52,10 @@ public class TaskRepository extends TimerTask implements Serializable {
         }
     }
 
+    /**
+     * calculate value of last ID
+     * @return value of last ID
+     */
     public int calculateMaxId() {
         int maxId = 0;
         for (Task task : tasks) {
@@ -40,14 +67,25 @@ public class TaskRepository extends TimerTask implements Serializable {
         return maxId;
     }
 
+    /**
+     * @return list of tasks
+     */
     public List<Task> getTasks() {
         return tasks;
     }
 
+    /**
+     * adds new task to repository
+     * @param task new task
+     */
     public void addTask(Task task) {
         this.tasks.add(task);
     }
 
+    /**
+     * @param name name of task
+     * @return list of tasks with specific name
+     */
     public List<Task> getTasksByName(String name) {
         List<Task> result = new ArrayList<>();
         for (Task task : tasks) {
@@ -56,31 +94,32 @@ public class TaskRepository extends TimerTask implements Serializable {
         return result;
     }
 
+    /**
+     * remove task(s) from repository
+     * @param requiredTasks list of tasks which must be removed
+     */
     public void removeTasks(List<Task> requiredTasks) {
         tasks.removeAll(requiredTasks);
     }
 
-    public void removeTask(String name, int num) {
-        for (int i = 0; i < tasks.size(); i++) {
-            Task task = tasks.get(i);
-            if (name.equals(task.getName())) {
-                i++;
-                if (i == num) {
-                    tasks.remove(task);
-                }
-
-            }
-        }
-    }
-
+    /**
+     * makes any task completed
+     * @param task task which must be completed
+     */
     public void completeTask(Task task) {
         task.setCompleted(true);
     }
 
+    /**
+     * clear task repository
+     */
     public void clear() {
         tasks.clear();
     }
 
+    /**
+     * saves current repository to disk
+     */
     public void save() {
         try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(path)))
         {
@@ -92,6 +131,10 @@ public class TaskRepository extends TimerTask implements Serializable {
         }
     }
 
+    /**
+     * checks if time for any task has come and
+     * asks to user if it is necessary to complete task
+     */
     @Override
     public void run() {
         Date dateNow = new Date();
@@ -99,14 +142,25 @@ public class TaskRepository extends TimerTask implements Serializable {
         for (Task task : tasks) {
             if(formatter.format(task.getTime()).equals(formatter.format(dateNow))) {
                 try {
-                    dos.writeUTF("\r\ntime for " + task.getName() + " has come" + "\ndo you want to complete it right now? y/n ");
+                    dis.readUTF();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    dos.writeUTF("\r\ntime for '" + task.getName() + "' has come" + "\ndo you want to complete it right now? y/n ");
                     String answer = dis.readUTF();
-                    if ("y".equals(answer)) {
-                        task.setCompleted(true);
-                        dos.writeUTF("task has completed, press \"Enter\"");
-                        dis.readUTF();
-                        dos.writeUTF("OK");
-                    }
+                    do {
+                        if ("y".equalsIgnoreCase(answer)) {
+                            task.setCompleted(true);
+                            dos.writeUTF("task has completed, press \"Enter\"");
+                            dis.readUTF();
+                        }
+                        else if (!"n".equalsIgnoreCase(answer)) {
+                            dos.writeUTF("wrong answer, use only \"y\" or \"n\"" );
+                            answer = dis.readUTF();
+                        }
+                    } while (!"y".equalsIgnoreCase(answer) && !"n".equalsIgnoreCase(answer));
+                    dos.writeUTF("OK");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

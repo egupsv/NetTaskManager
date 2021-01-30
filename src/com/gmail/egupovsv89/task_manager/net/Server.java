@@ -14,18 +14,35 @@ import java.util.Timer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * The {@code Server} class creates pull of parallel server sockets which interact with clients
+ * using mostly string messages
+ */
 public class Server {
+    /**
+     * value for total quantity of clients which can work with server at the same time
+     */
     private static final ExecutorService pool = Executors.newFixedThreadPool(10);
 
+    /**
+     * The {@code SingleServer} class creates single server socket for one client
+     */
     private static class SingleServer implements Runnable {
+        /**
+         * client socket
+         */
         private static Socket client;
+        /**
+         * registered users
+         */
         private static Users users;
-
         public SingleServer(Socket client, Users users) {
             SingleServer.client = client;
             SingleServer.users = users;
         }
-
+        /**
+         * runs single server
+         */
         @Override
         public void run() {
             System.out.println("Connection from " + client);
@@ -36,13 +53,16 @@ public class Server {
                     int success = 0;
                     User user = null;
                     String action = dis.readUTF();
+                    /*
+                    this part is responsible for authorization or registration
+                     */
                     if ("Q".equalsIgnoreCase(action)) {
                         client.close();
                         break;
                     }
-                    dos.writeUTF("Input login ");
+                    dos.writeUTF("Input login: ");
                     String login = dis.readUTF();
-                    dos.writeUTF("Input password ");
+                    dos.writeUTF("Input password: ");
                     String encPassword = dis.readUTF();
                     if ("L".equalsIgnoreCase(action)) {
                         User requiredUser = users.getUser(login);
@@ -64,8 +84,14 @@ public class Server {
                     }
                     dos.writeInt(success);
                     TaskRepository tr = new TaskRepository("users/" + login + ".txt", dis, dos);
-                    Timer timer = new Timer(true);
+                    /*
+                    starts the timer which keeps track of tasks terms
+                     */
+                    Timer timer = new Timer();
                     timer.schedule(tr, 0, 60000);
+                    /*
+                      this part is responsible for work with tasks
+                     */
                     String command = dis.readUTF();
                     while(!"exit".equals(command)) {
                         try {

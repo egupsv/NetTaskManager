@@ -3,12 +3,34 @@ package com.gmail.egupovsv89.task_manager;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * The {@code User} class represents task.
+ */
 public class Task implements Serializable {
     private static final long serialVersionUID = 1L;
+    /**
+     * the name of task
+     */
     private String name;
+
+    /**
+     * short description of task (any important information)
+     */
     private String description;
+
+    /**
+     * status of task
+     */
     private boolean completed = false;
+
+    /**
+     * unique ID
+     */
     private final int id;
+
+    /**
+     * date and time of task
+     */
     private Date time;
 
     public Task(String name, String description, Date time, int id) {

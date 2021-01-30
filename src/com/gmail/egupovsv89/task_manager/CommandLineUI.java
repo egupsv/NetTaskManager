@@ -4,8 +4,13 @@ import com.gmail.egupovsv89.task_manager.commands.*;
 
 import java.util.HashMap;
 
+/**
+ * The {@code CommandLineUI} class provides tool for using commands
+ */
 public class CommandLineUI {
-    public static final String TIMEFORMAT = "dd.MM.yyyy HH:mm";
+    /**
+     * hashmap for whole set of commands
+     */
     public static final HashMap<String, Command> COMMANDS = new HashMap<>();
     static {
         COMMANDS.put("help", new HelpCommand());

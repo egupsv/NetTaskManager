@@ -36,18 +36,34 @@ public class Utils {
         return message.toString();
     }
 
-    public List<Task> getRequiredTasks(List<Task> tasks, DataInputStream dis, DataOutputStream dos, boolean isZeroUsed) throws IOException {
-        List<Task> result = new ArrayList<>();
+    /**
+     * provides list of required tasks if names match when command is used.
+     * @param   tasks
+     *          list of tasks with the same name
+     * @param   dis
+     *          data input stream
+     * @param   dos
+     *          data output stream
+     * @param   isZeroUsed
+     *          true if command may be applied to the whole list, otherwise false
+     * @return  The resulting list
+     */
+    public static List<Task> getRequiredTasks(List<Task> tasks, DataInputStream dis, DataOutputStream dos, boolean isZeroUsed) throws IOException {
+        if (tasks.isEmpty()) {
+            dos.writeUTF(Utils.show(tasks, "no such tasks, press \"Enter\""));
+            dis.readUTF();
+            return null;
+        }
         if (tasks.size() == 1) {
             return tasks;
         }
+        List<Task> result = new ArrayList<>();
         dos.writeUTF("Here more then one task with the same name, chose the number of one you need or " +
                 "input \"0\" if you want to remove all: " + Utils.show(tasks, ""));
         int num;
         int lowerValue = isZeroUsed ? 0 : 1;
         /*
          * getting a specific number of task from user.
-         * this command can work with all tasks with the same name (when user inputs '0')
          */
         do {
             num = Integer.parseInt(dis.readUTF());
