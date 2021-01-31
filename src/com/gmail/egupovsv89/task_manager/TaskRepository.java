@@ -139,10 +139,11 @@ public class TaskRepository extends TimerTask implements Serializable {
     public void run() {
         Date dateNow = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat(TIMEFORMAT);
+        String messageFromClient = null;
         for (Task task : tasks) {
             if(formatter.format(task.getTime()).equals(formatter.format(dateNow))) {
                 try {
-                    dis.readUTF();
+                    messageFromClient = dis.readUTF();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -160,7 +161,9 @@ public class TaskRepository extends TimerTask implements Serializable {
                             answer = dis.readUTF();
                         }
                     } while (!"y".equalsIgnoreCase(answer) && !"n".equalsIgnoreCase(answer));
-                    dos.writeUTF("OK");
+                    if (messageFromClient!=null) {
+                        dos.writeUTF("last message: " + messageFromClient);
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

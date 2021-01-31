@@ -62,6 +62,9 @@ public class Client {
                 } else if (incomingMessage.contains("error")) {
                     success = 1;
                     System.out.println(incomingMessage);
+                } else if (incomingMessage.contains("last message: ")) {
+                    int startIndex = "last message: ".length();
+                    dos.writeUTF(incomingMessage.substring(startIndex));
                 } else {
                     String outgoingMessage = console.readLine(incomingMessage);
                     dos.writeUTF(outgoingMessage);
