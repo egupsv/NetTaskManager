@@ -1,9 +1,9 @@
 package com.gmail.egupovsv89.task_manager.commands;
 
 import com.gmail.egupovsv89.task_manager.Command;
-import com.gmail.egupovsv89.task_manager.CommandLineUI;
-import com.gmail.egupovsv89.task_manager.Task;
-import com.gmail.egupovsv89.task_manager.TaskRepository;
+import com.gmail.egupovsv89.task_manager.tasks.Task;
+import com.gmail.egupovsv89.task_manager.tasks.TaskRepository;
+import com.gmail.egupovsv89.task_manager.TaskChecker;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -36,7 +36,7 @@ public class AddCommand implements Command {
         String name = dis.readUTF();
         dos.writeUTF("Input description of task: ");
         String description = dis.readUTF();
-        SimpleDateFormat formatter = new SimpleDateFormat(TaskRepository.TIMEFORMAT);
+        SimpleDateFormat formatter = new SimpleDateFormat(TaskChecker.TIMEFORMAT);
         dos.writeUTF("Input date (DD.MM.YYYY) and time (hh:mm) for example '01.01.2030 11:30'): ");
         String timeInString = dis.readUTF();
         Date time;

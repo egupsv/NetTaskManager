@@ -1,7 +1,7 @@
 package com.gmail.egupovsv89.task_manager.commands;
 
 import com.gmail.egupovsv89.task_manager.Command;
-import com.gmail.egupovsv89.task_manager.TaskRepository;
+import com.gmail.egupovsv89.task_manager.tasks.TaskRepository;
 import com.gmail.egupovsv89.task_manager.commands.util.Utils;
 
 import java.io.DataInputStream;

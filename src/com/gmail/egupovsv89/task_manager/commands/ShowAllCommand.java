@@ -1,7 +1,7 @@
 package com.gmail.egupovsv89.task_manager.commands;
 
 import com.gmail.egupovsv89.task_manager.Command;
-import com.gmail.egupovsv89.task_manager.TaskRepository;
+import com.gmail.egupovsv89.task_manager.tasks.TaskRepository;
 import com.gmail.egupovsv89.task_manager.commands.util.Utils;
 
 import java.io.DataInputStream;
@@ -31,7 +31,10 @@ public class ShowAllCommand implements Command {
     @Override
     public void execute(TaskRepository tr, DataInputStream dis, DataOutputStream dos) throws IOException {
         dos.writeUTF(Utils.show(tr.getTasks(), "no tasks") + "\npress \"Enter\"");
+        System.out.println("sending list of tasks");
         dis.readUTF();
+        System.out.println("received empty message from client");
         dos.writeUTF("OK");
+        System.out.println("sending OK");
     }
 }

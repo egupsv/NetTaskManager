@@ -16,6 +16,7 @@ import java.security.NoSuchAlgorithmException;
  * interaction with server is performed by sending mostly string messages
  */
 public class Client {
+
     public static void main(String[] args) throws IOException, NoSuchAlgorithmException, NoSuchPaddingException {
         final Console console = System.console();
         Socket socket = new Socket("localhost", 7777);
@@ -23,9 +24,6 @@ public class Client {
         DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
         int success = 0;
         String login = null;
-        /*
-        this part is responsible for authorization or registration
-         */
         while (success == 0) {
             String action = console.readLine("Input 'L' to log in\nInput 'S' to sign up\nInput 'Q' to quit\n");
             dos.writeUTF(action);
@@ -45,7 +43,6 @@ public class Client {
             if (success == 0 && ("S".equalsIgnoreCase(action))) {
                 System.out.println("such login is already taken");
             }
-
         }
         System.out.println("Hello " + login);
         /*
@@ -53,8 +50,8 @@ public class Client {
          */
         success = 0;
         String command = console.readLine("\nInput a command (or input 'help' for list of commands): ");
+        dos.writeUTF(command);
         while (!"exit".equals(command)) {
-            dos.writeUTF(command);
             while (success == 0) {
                 String incomingMessage = dis.readUTF();
                 if ("OK".equals(incomingMessage)) {
@@ -62,9 +59,6 @@ public class Client {
                 } else if (incomingMessage.contains("error")) {
                     success = 1;
                     System.out.println(incomingMessage);
-                } else if (incomingMessage.contains("last message: ")) {
-                    int startIndex = "last message: ".length();
-                    dos.writeUTF(incomingMessage.substring(startIndex));
                 } else {
                     String outgoingMessage = console.readLine(incomingMessage);
                     dos.writeUTF(outgoingMessage);
@@ -72,8 +66,8 @@ public class Client {
             }
             success = 0;
             command = console.readLine("\nInput a command (or input 'help' for list of commands): ");
+            dos.writeUTF(command);
         }
-        dos.writeUTF(command);
         System.out.println(dis.readUTF());
         socket.close();
     }

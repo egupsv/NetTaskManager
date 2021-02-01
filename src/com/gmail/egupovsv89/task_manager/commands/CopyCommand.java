@@ -1,9 +1,9 @@
 package com.gmail.egupovsv89.task_manager.commands;
 
 import com.gmail.egupovsv89.task_manager.Command;
-import com.gmail.egupovsv89.task_manager.CommandLineUI;
-import com.gmail.egupovsv89.task_manager.Task;
-import com.gmail.egupovsv89.task_manager.TaskRepository;
+import com.gmail.egupovsv89.task_manager.TaskChecker;
+import com.gmail.egupovsv89.task_manager.tasks.Task;
+import com.gmail.egupovsv89.task_manager.tasks.TaskRepository;
 import com.gmail.egupovsv89.task_manager.commands.util.Utils;
 
 import java.io.DataInputStream;
@@ -42,7 +42,7 @@ public class CopyCommand implements Command {
         String timeInString = dis.readUTF();
         Date time;
         try {
-            time = new SimpleDateFormat(TaskRepository.TIMEFORMAT).parse(timeInString);
+            time = new SimpleDateFormat(TaskChecker.TIMEFORMAT).parse(timeInString);
             if (tr.getTasksByName(name).isEmpty()) {
                 dos.writeUTF(Utils.show(tr.getTasksByName(name), "no such tasks, press \"Enter\""));
                 dis.readUTF();

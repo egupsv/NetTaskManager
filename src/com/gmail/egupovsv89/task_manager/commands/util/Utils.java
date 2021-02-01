@@ -1,10 +1,12 @@
 package com.gmail.egupovsv89.task_manager.commands.util;
 
-import com.gmail.egupovsv89.task_manager.Task;
+import com.gmail.egupovsv89.task_manager.TaskChecker;
+import com.gmail.egupovsv89.task_manager.tasks.Task;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,13 +26,14 @@ public class Utils {
         if (tasks.isEmpty()) {
             return emptyMessage;
         }
+        SimpleDateFormat formatter = new SimpleDateFormat(TaskChecker.TIMEFORMAT);
         StringBuilder message = new StringBuilder();
         int index = 0;
         for (Task task : tasks) {
             String isCompleted = task.isCompleted() ? "completed" : "not completed";
             index++;
             message.append("\n").append(index).append(") name: ").append(task.getName()).
-                    append("\ndescription: ").append(task.getDescription()).append("\ntime: ").append(task.getTime()).
+                    append("\ndescription: ").append(task.getDescription()).append("\ntime: ").append(formatter.format(task.getTime())).
                     append("\n").append(isCompleted).append("\n");
         }
         return message.toString();

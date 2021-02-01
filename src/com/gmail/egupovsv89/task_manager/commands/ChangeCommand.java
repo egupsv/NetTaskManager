@@ -1,9 +1,9 @@
 package com.gmail.egupovsv89.task_manager.commands;
 
 import com.gmail.egupovsv89.task_manager.Command;
-import com.gmail.egupovsv89.task_manager.CommandLineUI;
-import com.gmail.egupovsv89.task_manager.Task;
-import com.gmail.egupovsv89.task_manager.TaskRepository;
+import com.gmail.egupovsv89.task_manager.TaskChecker;
+import com.gmail.egupovsv89.task_manager.tasks.Task;
+import com.gmail.egupovsv89.task_manager.tasks.TaskRepository;
 import com.gmail.egupovsv89.task_manager.commands.util.Utils;
 
 import java.io.DataInputStream;
@@ -90,7 +90,7 @@ public class ChangeCommand implements Command {
                 task.setDescription(newValue);
                 break;
             case ("time"):
-                SimpleDateFormat formatter = new SimpleDateFormat(TaskRepository.TIMEFORMAT);
+                SimpleDateFormat formatter = new SimpleDateFormat(TaskChecker.TIMEFORMAT);
                 try {
                     Date time = formatter.parse(newValue);
                     task.setTime(time);

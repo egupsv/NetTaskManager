@@ -1,28 +1,20 @@
-package com.gmail.egupovsv89.task_manager;
+package com.gmail.egupovsv89.task_manager.tasks;
+
 
 import java.io.*;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
  * The {@code Users} class represents repository of tasks.
  * this repository is stored in separate file for every single user
  */
-public class TaskRepository extends TimerTask implements Serializable {
+public class TaskRepository implements Serializable {
     /**
      * list of tasks
      */
     private List<Task> tasks;
 
-    /**
-     * data input stream
-     */
-    private final DataInputStream dis;
 
-    /**
-     * data output stream
-     */
-    private final DataOutputStream dos;
     private static final long serialVersionUID = 1L;
 
     /**
@@ -30,16 +22,9 @@ public class TaskRepository extends TimerTask implements Serializable {
      */
     private final String path;
 
-    /**
-     * template for time used when user inputs time
-     */
-    public static final String TIMEFORMAT = "dd.MM.yyyy HH:mm";
-
     @SuppressWarnings("unchecked")
-    public TaskRepository(String path, DataInputStream dis, DataOutputStream dos) throws IOException {
+    public TaskRepository(String path) throws IOException {
         this.path = path;
-        this.dis = dis;
-        this.dos = dos;
         BufferedReader br = new BufferedReader(new FileReader(path));
         if (br.readLine() == null) {
             this.tasks = new ArrayList<>();
@@ -130,45 +115,4 @@ public class TaskRepository extends TimerTask implements Serializable {
             System.out.println(e.getMessage());
         }
     }
-
-    /**
-     * checks if time for any task has come and
-     * asks to user if it is necessary to complete task
-     */
-    @Override
-    public void run() {
-        Date dateNow = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat(TIMEFORMAT);
-        String messageFromClient = null;
-        for (Task task : tasks) {
-            if(formatter.format(task.getTime()).equals(formatter.format(dateNow))) {
-                try {
-                    messageFromClient = dis.readUTF();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    dos.writeUTF("\r\ntime for '" + task.getName() + "' has come" + "\ndo you want to complete it right now? y/n ");
-                    String answer = dis.readUTF();
-                    do {
-                        if ("y".equalsIgnoreCase(answer)) {
-                            task.setCompleted(true);
-                            dos.writeUTF("task has completed, press \"Enter\"");
-                            dis.readUTF();
-                        }
-                        else if (!"n".equalsIgnoreCase(answer)) {
-                            dos.writeUTF("wrong answer, use only \"y\" or \"n\"" );
-                            answer = dis.readUTF();
-                        }
-                    } while (!"y".equalsIgnoreCase(answer) && !"n".equalsIgnoreCase(answer));
-                    if (messageFromClient!=null) {
-                        dos.writeUTF("last message: " + messageFromClient);
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
 }
