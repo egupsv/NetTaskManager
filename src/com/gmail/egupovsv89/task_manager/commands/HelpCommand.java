@@ -37,7 +37,7 @@ public class HelpCommand implements Command {
                     message.append("\n").append(value.getDescription());
                 }
             }
-            dos.writeUTF(message.toString() + "\npress \"Enter\"");
+            dos.writeUTF(message.toString() + "\npress \"Enter\"");//TODO why you don't append "press xxxx" via String Builder
             dis.readUTF();
             dos.writeUTF("OK");
     }

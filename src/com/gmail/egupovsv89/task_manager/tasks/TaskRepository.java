@@ -32,7 +32,7 @@ public class TaskRepository implements Serializable {
             try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path))) {
                 this.tasks = (List<Task>) ois.readObject();
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                System.out.println(e.getMessage()); //TODO we loose stack trace in such way, only mesage is logged, better to print whole S
             }
         }
     }

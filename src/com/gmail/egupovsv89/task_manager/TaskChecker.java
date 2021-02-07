@@ -17,7 +17,7 @@ public class TaskChecker extends TimerTask implements Serializable {
     /**
      * data input stream
      */
-    private final DataInputStream dis;
+    private final DataInputStream dis; //TODO unused?
 
     /**
      * data output stream
@@ -43,6 +43,7 @@ public class TaskChecker extends TimerTask implements Serializable {
         SimpleDateFormat formatter = new SimpleDateFormat(TIMEFORMAT);
         List<Task> tasks = tr.getTasks();
         for (Task task : tasks) {
+            //TODO too long expession, please split it into several ones
             if (formatter.format(task.getTime()).equals(formatter.format(dateNow)) && !task.isCompleted()) {
                 try {
                     dos.writeUTF("\r\n!!!!!!!!!!time for '" + task.getName() + "' has come!!!!!!!!!!\n don't forget to complete");
